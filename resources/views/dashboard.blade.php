@@ -1,7 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
+            <a href="{{ route('health-card.create') }}"
+                            class="btn btn-primary justify-end"
+                        >Create Health Card
+                    </a>
         </h2>
     </x-slot>
 
