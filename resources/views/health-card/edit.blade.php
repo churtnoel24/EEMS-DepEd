@@ -2,16 +2,18 @@
 
 @section('header')
     <h2 class="fw-semibold fs-4 text-dark mb-0">
-        {{ __('Health Card Form') }}
+        {{ __('Health Card Details') }}
     </h2>
 @endsection
 
-@section('content')
-    <div class="container my-4">
-        <form method="POST" action="{{ route('health-card.store') }}" class="needs-validation" novalidate>
-            @csrf
 
-            {{-- Personal Information --}}
+@section('content')
+<div class="container mt-3">
+<form method="POST" action="{{ route('health-cards.update', $healthCard->id) }}">
+    @csrf
+    @method('PUT')
+
+     {{-- Personal Information --}}
             <div class="card mb-4">
                 <div class="card-header fw-bold">
                     <a class="d-flex justify-content-between align-items-center text-decoration-none text-dark"
@@ -460,9 +462,8 @@
                 </div>
             </div>
 
-            <div class="text-end mt-4">
-                <button class="btn btn-primary px-4">Submit</button>
-            </div>
-        </form>
-    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+</div>
+
 @endsection

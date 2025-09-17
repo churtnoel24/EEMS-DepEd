@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-primary shadow-sm p-2">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="{{ route('dashboard') }}">
@@ -24,6 +24,24 @@
                         <a class="nav-link {{ request()->routeIs('health-card.create') ? 'active' : '' }}"
                             href="{{ route('health-card.create') }}">
                             {{ __('Create Health Card') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('health-card.ctr') ? 'active' : '' }}"
+                            href="{{ route('health-card.ctr') }}">
+                            {{ __('Consultation and Treatment Record') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('health-card.ctrs') ? 'active' : '' }}"
+                            href="{{ route('health-card.ctrs') }}">
+                            {{ __('All Records') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('health-cards.cards') ? 'active' : '' }}"
+                            href="{{ route('health-cards.cards') }}">
+                            {{ __('Cards') }}
                         </a>
                     </li>
                 @endauth

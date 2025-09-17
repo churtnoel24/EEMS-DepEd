@@ -21,6 +21,15 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/health-card', [HealthCardController::class, 'create'])->name('health-card.create');
     Route::post('/health-card', [HealthCardController::class, 'store'])->name('health-card.store');
+
+    Route::get('/health-card/ctr', [HealthCardController::class, 'ctr'])->name('health-card.ctr');
+    Route::post('/health-card/ctr', [HealthCardController::class, 'ctrstore'])->name('health-card.ctrstore');
+
+    Route::get('/health-cards/search', [HealthCardController::class, 'search'])->name('health-cards.search');
+
+    Route::get('/ctrs', [HealthCardController::class, 'showCtrs'])->name('health-card.ctrs');
+    Route::get('/ctrs/cards', [HealthCardController::class, 'showHealthCards'])->name('health-cards.cards');
+    Route::resource('health-cards', HealthCardController::class);
 });
 
 

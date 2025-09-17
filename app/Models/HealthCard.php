@@ -120,4 +120,9 @@ class HealthCard extends Model
         'present_health_status_anemia',
         'present_health_status_others',
     ];
+
+    public function ctrs()
+    {
+        return $this->hasMany(CTR::class);
+    }
 }
