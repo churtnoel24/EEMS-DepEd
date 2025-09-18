@@ -28,8 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/health-cards/search', [HealthCardController::class, 'search'])->name('health-cards.search');
 
     Route::get('/ctrs', [HealthCardController::class, 'showCtrs'])->name('health-card.ctrs');
-    Route::get('/ctrs/cards', [HealthCardController::class, 'showHealthCards'])->name('health-cards.cards');
-    Route::resource('health-cards', HealthCardController::class);
+    Route::resource('health-cards', HealthCardController::class)->name('index', 'health-cards.index');
 });
 
 

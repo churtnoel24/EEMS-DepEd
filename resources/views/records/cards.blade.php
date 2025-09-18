@@ -17,7 +17,7 @@
         <!-- Search Box -->
         <div class="card mb-4">
             <div class="card-body">
-                <form method="GET" action="{{ route('health-cards.cards') }}" class="row g-3 align-items-center">
+                <form method="GET" action="{{ route('health-cards.index') }}" class="row g-3 align-items-center">
                     <div class="col-md-10">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -63,13 +63,13 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="tests-tab" data-bs-toggle="tab"
                                 data-bs-target="#tests-{{ $card->id }}" type="button" role="tab">
-                                Tests & Results
+                                Last Taken Tests & Results
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="social-tab" data-bs-toggle="tab"
                                 data-bs-target="#social-{{ $card->id }}" type="button" role="tab">
-                                Lifestyle
+                                Social History
                             </button>
                         </li>
                     </ul>
@@ -135,6 +135,12 @@
                                     @endif
                                 @endforeach
                             </div>
+                            <div class="mb-3">
+                                <span class="col-md-12">
+                                    <label class="info-label fw-bold">Other Remarks</label>
+                                    <span class="d-block">{{ $card->other_remarks }}</span>
+                                </span>
+                            </div>
 
                             <h6 class="section-title">Past Medical History</h6>
                             <div class="d-flex flex-wrap gap-2 mb-3">
@@ -168,6 +174,12 @@
                                         Hospitalization: {{ $card->past_medical_history_hospitalization }}
                                     </span>
                                 @endif
+                            </div>
+                            <div class="mb-3">
+                                <span class="col-md-12">
+                                    <label class="info-label fw-bold">Others <em>Pls. specify</em></label>
+                                    <span class="d-block">{{ $card->past_medical_history_others }}</span>
+                                </span>
                             </div>
 
                             <h6 class="section-title">Present Health Status</h6>

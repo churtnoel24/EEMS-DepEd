@@ -39,8 +39,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('health-cards.cards') ? 'active' : '' }}"
-                            href="{{ route('health-cards.cards') }}">
+                        <a class="nav-link {{ request()->routeIs('health-cards.index') ? 'active' : '' }}"
+                            href="{{ route('health-cards.index') }}">
                             {{ __('Cards') }}
                         </a>
                     </li>

@@ -73,19 +73,6 @@ class HealthCardController extends Controller
     return view('records.records', compact('ctrs'));
 }
 
-   public function showHealthCards(Request $request)
-{
-    $search = $request->q;
-
-    $healthCards = HealthCard::when($search, function ($query, $search) {
-        $query->where('name', 'like', "%{$search}%");
-    })
-    ->latest()
-    ->paginate(15)
-    ->withQueryString();
-
-    return view('records.cards', compact('healthCards'));
-}
 
 public function edit(HealthCard $healthCard)
 {
@@ -96,7 +83,11 @@ public function update(StoreHealthCardRequest $request, HealthCard $healthCard)
 {
     $validatedData = $request->validated();
 
-    $healthCard->update($validatedData);
+    $filtered = array_filter($validatedData, function ($value) {
+        return $value !== null && $value !== '';
+    });
+
+    $healthCard->update($filtered);
 
     return redirect()->route('health-cards.index')->with('success', 'Health card updated successfully.');
 }
