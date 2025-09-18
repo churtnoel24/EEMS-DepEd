@@ -33,17 +33,28 @@ class HealthCardController extends Controller
 
     public function ctrstore(Request $request)
 {
-    $request->validate([
-        'health_card_id' => 'required|exists:health_cards,id',
-        'consultation_date' => 'required|date',
-        'symptoms' => 'required|string',
-        'diagnosis' => 'required|string',
-        'treatment' => 'required|string',
-    ]);
+    try {
+        $validatedData = $request->validate([
+            'health_card_id' => 'required|exists:health_cards,id',
+            'consultation_date' => 'required|date',
+            'symptoms' => 'required|string',
+            'diagnosis' => 'required|string',
+            'treatment' => 'required|string',
+        ]);
 
-    CTR::create($request->all());
+        CTR::create($validatedData);
 
-    return redirect()->back()->with('success', 'CTR saved successfully!');
+        return redirect()->back()->with('success', 'CTR saved successfully!');
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return redirect()->back()
+                        ->withErrors($e->validator)
+                        ->withInput();
+    } catch (\Exception $e) {
+        return redirect()->back()
+                        ->with('error', 'An unexpected error occurred: ' . $e->getMessage())
+                        ->withInput();
+    }
 }
 
 

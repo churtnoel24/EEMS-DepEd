@@ -8,6 +8,22 @@
 
 @section('content')
 <div class="container mt-2">
+
+     {{-- Flash messages --}}
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    {{-- Validation errors --}}
+    @if ($errors->any())
+        <div class="alert alert-danger position-fixed top-30 end-0 shadow fade show m-3" style="z-index: 1050; opacity: 0.85;">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
