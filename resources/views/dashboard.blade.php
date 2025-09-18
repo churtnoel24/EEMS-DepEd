@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-   <div class="container mt-4">
+   {{-- <div class="container mt-4">
         <!-- Stats Overview -->
         <div class="row mb-4">
             <div class="col-md-3 mb-3">
@@ -284,5 +284,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+
+    <h6 class="d-flex justify-content-center align-items-center mt-4">hello</h6>
 @endsection

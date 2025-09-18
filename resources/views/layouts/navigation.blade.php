@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-primary shadow-sm p-2">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-darkblue shadow-sm p-2">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="{{ route('dashboard') }}">
