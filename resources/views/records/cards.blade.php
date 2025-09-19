@@ -79,7 +79,7 @@
                         <!-- Personal Information Tab -->
                         <div class="tab-pane fade show active" id="personal-{{ $card->id }}" role="tabpanel">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <span class="info-label">Date of Birth:</span>
                                         <span
@@ -94,18 +94,28 @@
                                         <span class="d-block">{{ $card->gender }}</span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <span class="info-label">Civil Status:</span>
                                         <span class="d-block">{{ $card->civil_status }}</span>
                                     </div>
                                     <div class="mb-3">
                                         <span class="info-label">Position:</span>
-                                        <span class="d-block">{{ $card->position_designation }}</span>
+                                        <span class="d-block">{{ $card->professionalInformation->position_designation }}</span>
                                     </div>
                                     <div class="mb-3">
                                         <span class="info-label">Years in Service:</span>
-                                        <span class="d-block">{{ $card->years_in_service }}</span>
+                                        <span class="d-block">{{ $card->professionalInformation->years_in_service }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <span class="info-label">School District/Division:</span>
+                                        <span class="d-block">{{ $card->professionalInformation->school_district_division }}</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="info-label">First Year in Service:</span>
+                                        <span class="d-block">{{ $card->professionalInformation->first_year_in_service}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -128,9 +138,9 @@
                                         $flag = "family_history_{$key}";
                                         $rel = "family_history_{$key}_relationship";
                                     @endphp
-                                    @if ($card->$flag === 'Y')
+                                    @if ($card->familyHistory->$flag === 'Y')
                                         <span class="badge bg-info text-dark medical-badge">
-                                            {{ $label }} ({{ $card->$rel }})
+                                            {{ $label }} ({{ $card->familyHistory->$rel }})
                                         </span>
                                     @endif
                                 @endforeach
@@ -138,7 +148,7 @@
                             <div class="mb-3">
                                 <span class="col-md-12">
                                     <label class="info-label fw-bold">Other Remarks</label>
-                                    <span class="d-block">{{ $card->other_remarks }}</span>
+                                    <span class="d-block">{{ $card->familyHistory->other_remarks }}</span>
                                 </span>
                             </div>
 
@@ -152,33 +162,33 @@
             'tuberculosis' => 'Tuberculosis',
         ] as $key => $label)
                                     @php $field = "past_medical_history_{$key}"; @endphp
-                                    @if ($card->$field === 'Y')
+                                    @if ($card->pastMedicalHistory->$field === 'Y')
                                         <span class="badge bg-warning text-dark medical-badge">{{ $label }}</span>
                                     @endif
                                 @endforeach
 
-                                @if ($card->has_allergy === 'Y')
+                                @if ($card->pastMedicalHistory->has_allergy === 'Y')
                                     <span class="badge bg-warning text-dark medical-badge">
-                                        Allergy: {{ $card->past_medical_history_allergy }}
+                                        Allergy: {{ $card->pastMedicalHistory->past_medical_history_allergy }}
                                     </span>
                                 @endif
 
-                                @if ($card->had_surgery === 'Y')
+                                @if ($card->pastMedicalHistory->had_surgery === 'Y')
                                     <span class="badge bg-warning text-dark medical-badge">
-                                        Surgery: {{ $card->past_medical_history_surgery }}
+                                        Surgery: {{ $card->pastMedicalHistory->past_medical_history_surgery }}
                                     </span>
                                 @endif
 
-                                @if ($card->had_been_hospitalized === 'Y')
+                                @if ($card->pastMedicalHistory->had_been_hospitalized === 'Y')
                                     <span class="badge bg-warning text-dark medical-badge">
-                                        Hospitalization: {{ $card->past_medical_history_hospitalization }}
+                                        Hospitalization: {{ $card->pastMedicalHistory->past_medical_history_hospitalization }}
                                     </span>
                                 @endif
                             </div>
                             <div class="mb-3">
                                 <span class="col-md-12">
                                     <label class="info-label fw-bold">Others <em>Pls. specify</em></label>
-                                    <span class="d-block">{{ $card->past_medical_history_others }}</span>
+                                    <span class="d-block">{{ $card->pastMedicalHistory->past_medical_history_others }}</span>
                                 </span>
                             </div>
 
@@ -197,7 +207,7 @@
             'syncope_fainting' => 'Fainting',
         ] as $key => $label)
                                     @php $field = "present_health_status_{$key}"; @endphp
-                                    @if ($card->$field === 'Y')
+                                    @if ($card->presentHealthStatus->$field === 'Y')
                                         <span class="badge bg-light text-dark medical-badge">{{ $label }}</span>
                                     @endif
                                 @endforeach
@@ -219,21 +229,21 @@
                                         $dateField = "last_taken_{$key}_date";
                                         $resField = "last_taken_{$key}_result";
                                     @endphp
-                                    @if ($card->$dateField || $card->$resField)
+                                    @if ($card->lastTaken->$dateField || $card->lastTaken->$resField)
                                         <div class="col-md-6 mb-3">
                                             <div class="card h-100">
                                                 <div class="card-body">
                                                     <h6 class="card-title">{{ $label }}</h6>
-                                                    @if ($card->$dateField)
+                                                    @if ($card->lastTaken->$dateField)
                                                         <div class="mb-1">
                                                             <span class="info-label">Date:</span>
-                                                            <span>{{ \Carbon\Carbon::parse($card->$dateField)->format('M d, Y') }}</span>
+                                                            <span>{{ \Carbon\Carbon::parse($card->lastTaken->$dateField)->format('M d, Y') }}</span>
                                                         </div>
                                                     @endif
-                                                    @if ($card->$resField)
+                                                    @if ($card->lastTaken->$resField)
                                                         <div>
                                                             <span class="info-label">Result:</span>
-                                                            <span class="badge bg-success">{{ $card->$resField }}</span>
+                                                            <span class="badge bg-success">{{ $card->lastTaken->$resField }}</span>
                                                         </div>
                                                     @endif
                                                 </div>
@@ -248,34 +258,34 @@
                         <div class="tab-pane fade" id="social-{{ $card->id }}" role="tabpanel">
                             <div class="row">
                                 <div class="col-md-6">
-                                    @if ($card->smoking === 'Y')
+                                    @if ($card->socialHistory->smoking === 'Y')
                                         <div class="card mb-3">
                                             <div class="card-body">
                                                 <h6 class="card-title">Smoking</h6>
                                                 <div class="mb-1">
                                                     <span class="info-label">Started at age:</span>
-                                                    <span>{{ $card->smoking_age_started }}</span>
+                                                    <span>{{ $card->socialHistory->smoking_age_started }}</span>
                                                 </div>
                                                 <div class="mb-1">
                                                     <span class="info-label">Amount:</span>
-                                                    <span>{{ $card->smoking_sticks_pack_per_day }} sticks/day</span>
+                                                    <span>{{ $card->socialHistory->smoking_sticks_pack_per_day }} sticks/day</span>
                                                 </div>
                                                 <div>
                                                     <span class="info-label">Pack-years:</span>
-                                                    <span>{{ $card->smoking_pack_per_year }}</span>
+                                                    <span>{{ $card->socialHistory->smoking_pack_per_year }}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     @endif
                                 </div>
                                 <div class="col-md-6">
-                                    @if ($card->alcohol === 'Y')
+                                    @if ($card->socialHistory->alcohol === 'Y')
                                         <div class="card mb-3">
                                             <div class="card-body">
                                                 <h6 class="card-title">Alcohol Consumption</h6>
                                                 <div>
                                                     <span class="info-label">Frequency:</span>
-                                                    <span>{{ $card->alcohol_how_often }}</span>
+                                                    <span>{{ $card->socialHistory->alcohol_how_often }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -283,11 +293,11 @@
                                 </div>
                             </div>
 
-                            @if ($card->food_preference)
+                            @if ($card->socialHistory->food_preference)
                                 <div class="card">
                                     <div class="card-body">
                                         <h6 class="card-title">Food Preference</h6>
-                                        <p class="mb-0">{{ $card->food_preference }}</p>
+                                        <p class="mb-0">{{ $card->socialHistory->food_preference }}</p>
                                     </div>
                                 </div>
                             @endif

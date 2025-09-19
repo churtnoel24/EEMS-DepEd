@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CTR;
 use App\Models\HealthCard;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreHealthCardRequest;
 
@@ -14,13 +15,74 @@ class HealthCardController extends Controller
     public function store(StoreHealthCardRequest $request)
     {
         // All data is already validated in StoreHealthCardRequest
-        $healthInformation = $request->validated();
+        $data = $request->validated();
 
-        //save to db
-        HealthCard::create($healthInformation);
+        // Parent Table
+        $healthCard = HealthCard::create(Arr::only($data, [
+        'date','name','date_of_birth','age','gender','civil_status',
+        ]));
+
+        $healthCard->professionalInformation()->create(Arr::only($data, [
+        'school_district_division','position_designation','first_year_in_service','years_in_service',
+        ]));
+
+        $healthCard->familyHistory()->create(Arr::only($data, [
+        'family_history_hypertension','family_history_hypertension_relationship',
+        'family_history_cardiovascular_disease','family_history_cardiovascular_disease_relationship',
+        'family_history_diabetes_mellitus','family_history_diabetes_mellitus_relationship',
+        'family_history_kidney_disease','family_history_kidney_disease_relationship',
+        'family_history_cancer','family_history_cancer_relationship',
+        'family_history_asthma','family_history_asthma_relationship',
+        'family_history_allergy','family_history_allergy_relationship',
+        'other_remarks',
+        ]));
+
+        $healthCard->pastMedicalHistory()->create(Arr::only($data, [
+        'past_medical_history_hypertension','past_medical_history_asthma',
+        'past_medical_history_diabetes_mellitus' ,'past_medical_history_cardiovascular_disease',
+        'has_allergy' , 'past_medical_history_allergy' , 'past_medical_history_tuberculosis' ,
+        'had_surgery' , 'past_medical_history_surgery' , 'yellowish_discoloration_of_skin_selera' ,
+        'had_been_hospitalized' , 'past_medical_history_hospitalization', 'past_medical_history_others' ,
+        ]));
+
+        $healthCard->lastTaken()->create(Arr::only($data, [
+        'last_taken_cxr_sputum_date', 'last_taken_cxr_sputum_result',
+        'last_taken_ecg_date', 'last_taken_ecg_result',
+        'last_taken_urinalysis_date', 'last_taken_urinalysis_result',
+        'last_taken_drug_test_date', 'last_taken_drug_test_result',
+        'last_taken_neuro_exam_date', 'last_taken_neuro_exam_result',
+        'last_taken_bloodtyping_date',  'last_taken_bloodtyping_result',
+        'last_taken_others',
+        ]));
+
+        $healthCard->socialHistory()->create(Arr::only($data, [
+        'smoking', 'smoking_age_started', 'smoking_sticks_pack_per_day', 'smoking_pack_per_year',
+        'alcohol', 'alcohol_how_often', 'food_preference',
+        ]));
+
+        $healthCard->obgynHistory()->create(Arr::only($data, [
+        'menarche', 'cycle', 'duration', 'ob_gyn_parity',
+        'papsmear_done', 'papsmear_date', 'self_breast_exam_done', 'mass_noted', 'mass_location',
+        ]));
+
+        $healthCard->malePersonnel()->create(Arr::only($data, [
+        'digital_rectal_exam_done', 'digital_rectal_exam_date', 'digital_rectal_exam_result',
+        ]));
+
+        $healthCard->presentHealthStatus()->create(Arr::only($data, [
+        'present_health_status_cough', 'present_health_status_dizziness' , 'present_health_status_dyspnea' ,
+        'present_health_status_chest_back_pain', 'present_health_status_easy_fatigability',
+        'present_health_status_joint_extremity_pains', 'present_health_status_blurring_of_vision',
+        'present_health_status_wearing_eyeglasses', 'present_health_status_vaginal_discharge_bleeding',
+        'present_health_status_dental_status', 'present_health_status_present_medications_taken',
+        'present_health_status_lumps', 'present_health_status_painful_urination', 'present_health_status_poor_loss_of_hearing',
+        'present_health_status_syncope_fainting', 'present_health_status_convulsions', 'present_health_status_malaria',
+        'present_health_status_goiter', 'present_health_status_anemia', 'present_health_status_others',
+        ]));
 
         return back()->with('success', 'Health card saved.');
     }
+
     public function create()
     {
         return view('health-card.create');
@@ -107,7 +169,17 @@ public function index(Request $request)
 {
     $search = $request->q;
 
-    $healthCards = HealthCard::when($search, function ($query, $search) {
+    $healthCards = HealthCard::with([
+        'professionalInformation',
+        'familyHistory',
+        'pastMedicalHistory',
+        'lastTaken',
+        'socialHistory',
+        'obgynHistory',
+        'malePersonnel',
+        'presentHealthStatus',
+    ])
+    ->when($search, function ($query, $search) {
         $query->where('name', 'like', "%{$search}%");
     })->paginate(15);
 
