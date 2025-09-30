@@ -64,4 +64,9 @@ class HealthCard extends Model
     {
         return $this->hasMany(CTR::class);
     }
+
+    public function dentalCard()
+    {
+        return $this->hasOne(DentalCard::class);
+    }
 }

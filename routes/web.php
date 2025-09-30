@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HealthCardController;
+use App\Http\Controllers\DentalCardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/health-card', [HealthCardController::class, 'create'])->name('health-card.create');
     Route::post('/health-card', [HealthCardController::class, 'store'])->name('health-card.store');
+
+    Route::get('/dental-card', [DentalCardController::class,'create'])->name('dental-card.create');
+    Route::post('/dental-card', [DentalCardController::class,'store'])->name('dental-card.store');
 
     Route::get('/health-card/ctr', [HealthCardController::class, 'ctr'])->name('health-card.ctr');
     Route::post('/health-card/ctr', [HealthCardController::class, 'ctrstore'])->name('health-card.ctrstore');

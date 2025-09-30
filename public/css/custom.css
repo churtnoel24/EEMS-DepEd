@@ -1,22 +1,192 @@
-/* Custom dark blue color */
+/* Sidebar Styles - Always Collapsible */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    margin-top: 56px;
+}
+
+.sidebar.show {
+    left: 0;
+}
+
+.sidebar.collapsed {
+    width: 60px;
+}
+
+.sidebar-content {
+    padding: 20px 0;
+    height: 100%;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-content {
+    padding: 20px 0;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-item {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link:hover {
+    background: #e9ecef;
+    color: #000;
+    border-left-color: #007bff;
+}
+
+.sidebar-link.active {
+    background: #007bff;
+    color: white;
+    border-left-color: #0056b3;
+}
+
+.sidebar-link i {
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.sidebar-link span {
+    margin-left: 10px;
+    transition: opacity 0.3s ease;
+}
+
+/* Hide text when collapsed */
+.sidebar.collapsed .sidebar-link span {
+    opacity: 0;
+    width: 0;
+    margin-left: 0;
+}
+
+.sidebar-header {
+    padding: 10px 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-header {
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* Top navbar adjustment */
 .navbar-darkblue {
-    background-color: #00008B !important;
+    background: #2c3e50 !important;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+    height: 56px;
 }
 
-.navbar-darkblue .navbar-brand {
-    color: #ffffff !important;
+/* Main content adjustment */
+.main-content {
+    margin-left: 0;
+    margin-top: 56px;
+    padding: 20px;
+    transition: all 0.3s ease;
 }
 
-.navbar-darkblue .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.9) !important;
+.main-content.sidebar-open {
+    margin-left: 250px;
 }
 
-.navbar-darkblue .navbar-nav .nav-link:hover,
-.navbar-darkblue .navbar-nav .nav-link:focus {
-    color: #f8f9fa !important;
+.main-content.sidebar-collapsed {
+    margin-left: 60px;
 }
 
-.navbar-darkblue .navbar-toggler {
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.1);
+/* Overlay for mobile */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+/* Toggle button animation */
+#sidebarToggle i {
+    transition: transform 0.3s ease;
+}
+
+.sidebar.show:not(.collapsed) #sidebarToggle i {
+    transform: rotate(180deg);
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+    .sidebar {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 250px;
+    }
+
+    /* Show toggle button on desktop too */
+    #sidebarToggle {
+        display: block !important;
+    }
+
+    .sidebar-overlay {
+        display: none !important;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+    .sidebar.collapsed {
+        left: -250px;
+    }
+
+    .sidebar.show.collapsed {
+        left: 0;
+        width: 250px;
+    }
+
+    .main-content.sidebar-collapsed {
+        margin-left: 0;
+    }
+}
+
+/* Ensure body doesn't scroll when sidebar is open on mobile */
+body.sidebar-open-mobile {
+    overflow: hidden;
 }

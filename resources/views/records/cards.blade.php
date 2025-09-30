@@ -72,6 +72,12 @@
                                 Social History
                             </button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="social-tab" data-bs-toggle="tab"
+                                data-bs-target="#reproductive-{{ $card->id }}" type="button" role="tab">
+                                OB-Gyn for Female & Rectal Exam for Male
+                            </button>
+                        </li>
                     </ul>
 
                     <!-- Tab Content -->
@@ -298,6 +304,86 @@
                                     <div class="card-body">
                                         <h6 class="card-title">Food Preference</h6>
                                         <p class="mb-0">{{ $card->socialHistory->food_preference }}</p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="tab-pane fade" id="reproductive-{{ $card->id }}" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @if ($card->gender === 'Female')
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Ob-gyn History</h6>
+                                                <div class="mb-1">
+                                                    <span class="info-label">Menarche:</span>
+                                                    <span>{{ $card->obgynHistory->menarche }}</span>
+                                                </div>
+                                                <div class="mb-1">
+                                                    <span class="info-label">Cycle:</span>
+                                                    <span>{{ $card->obgynHistory->cycle }}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="info-label">Duration:</span>
+                                                    <span>{{ $card->obgynHistory->duration }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="col-md-6">
+                                    @if ($card->gender === 'Female')
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="mb-1">
+                                                    <span class="info-label">OB Gyn Parity:</span>
+                                                    <span>{{ $card->obgynHistory->ob_gyn_parity }}</span>
+                                                </div>
+                                                <div class="mb-1">
+                                                    <span class="info-label">Papsmear Done:</span>
+                                                    <span>{{ $card->obgynHistory->papsmear_done }}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="info-label">Papsmear Date:</span>
+                                                    <span>{{ $card->obgynHistory->papsmear_date }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+
+                            @if ($card->gender === 'Female')
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Self Breast Exam Done</h6>
+                                        <p class="mb-0">{{ $card->obgynHistory->self_breast_exam_done }}</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Mass Noted</h6>
+                                        <p class="mb-0">{{ $card->obgynHistory->mass_noted }}</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Mass Location</h6>
+                                        <p class="mb-0">{{ $card->socialHistory->mass_location }}</p>
+                                    </div>
+                                </div>
+                                 @endif
+                        </div>
+
+                                @if ($card->gender === 'Male')
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Digital Rectal Exam Done</h6>
+                                        <p class="mb-0">{{ $card->malePersonnel->digital_rectal_exam_done }}</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Digital Rectal Exam Date</h6>
+                                        <p class="mb-0">{{ $card->malePersonnel->digital_rectal_exam_date }}</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Digital Rectal Exam Result</h6>
+                                        <p class="mb-0">{{ $card->malePersonnel->digital_rectal_exam_result }}</p>
                                     </div>
                                 </div>
                             @endif
