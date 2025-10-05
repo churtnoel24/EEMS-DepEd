@@ -32,7 +32,7 @@
             </div>
         </header> --}}
 
-        <main>
+        <main class="main-content" id="mainContent">
             @yield('content')
         </main>
     </div>

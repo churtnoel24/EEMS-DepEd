@@ -5,7 +5,7 @@
     position: fixed;
     top: 0;
     left: -250px;
-    background: #f8f9fa;
+    background: #2c3e50;
     transition: all 0.3s ease;
     z-index: 1000;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
@@ -17,7 +17,7 @@
 }
 
 .sidebar.collapsed {
-    width: 60px;
+    width: 0px;
 }
 
 .sidebar-content {
@@ -39,28 +39,32 @@
 
 .sidebar-item {
     margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
+    /* REMOVED: white-space: nowrap; */
+    /* REMOVED: overflow: hidden; */
+    width: 100%; /* Added for proper width control */
 }
 
 .sidebar-link {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Changed from center to flex-start */
     padding: 12px 20px;
     color: #333;
     text-decoration: none;
     transition: all 0.2s;
     border-left: 3px solid transparent;
+    white-space: normal; /* Added for text wrapping */
+    word-wrap: break-word; /* Added for text wrapping */
+    overflow-wrap: break-word; /* Added for text wrapping */
 }
 
 .sidebar-link:hover {
-    background: #e9ecef;
+    background: #232323;
     color: #000;
     border-left-color: #007bff;
 }
 
 .sidebar-link.active {
-    background: #007bff;
+    background: #4c5a69;
     color: white;
     border-left-color: #0056b3;
 }
@@ -69,11 +73,19 @@
     width: 20px;
     text-align: center;
     flex-shrink: 0;
+    margin-top: 0.1rem; /* Added for better icon alignment with wrapped text */
 }
 
 .sidebar-link span {
     margin-left: 10px;
     transition: opacity 0.3s ease;
+    /* Added for text wrapping */
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    flex: 1; /* Take available space */
+    min-width: 0; /* Crucial for text wrapping in flex containers */
+    line-height: 1.4; /* Better line spacing */
 }
 
 /* Hide text when collapsed */
@@ -90,9 +102,12 @@
     color: #6c757d;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-top: 15px;
-    white-space: nowrap;
-    overflow: hidden;
+    margin-top: 5px;
+    /* REMOVED: white-space: nowrap; */
+    /* REMOVED: overflow: hidden; */
+    white-space: normal; /* Added for text wrapping */
+    word-wrap: break-word; /* Added for text wrapping */
+    overflow-wrap: break-word; /* Added for text wrapping */
     transition: all 0.3s ease;
 }
 
@@ -116,7 +131,7 @@
 /* Main content adjustment */
 .main-content {
     margin-left: 0;
-    margin-top: 56px;
+    margin-top: 10px;
     padding: 20px;
     transition: all 0.3s ease;
 }
@@ -148,6 +163,89 @@
 
 .sidebar.show:not(.collapsed) #sidebarToggle i {
     transform: rotate(180deg);
+}
+
+/* Collapsible Section Styles */
+.sidebar-section {
+    margin: 0;
+}
+
+.sidebar-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Changed from center to flex-start */
+    padding: 12px 20px;
+    color: #6c757d;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    user-select: none;
+    /* Added for text wrapping */
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.sidebar-section-header:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.sidebar-section-header .section-arrow {
+    transition: transform 0.3s ease;
+    font-size: 0.7rem;
+    flex-shrink: 0; /* Prevent arrow from shrinking */
+    margin-left: 0.5rem; /* Add some spacing */
+    margin-top: 0.1rem; /* Better vertical alignment */
+}
+
+.sidebar-section-header[aria-expanded="true"] .section-arrow {
+    transform: rotate(180deg);
+}
+
+.sidebar-section-header span {
+    /* Added for text wrapping in section headers */
+    flex: 1;
+    min-width: 0;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.4;
+}
+
+.sidebar-subnav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.sidebar-subnav .sidebar-link {
+    padding-left: 40px; /* Indent submenu items */
+    font-size: 0.9rem;
+}
+
+/* Hide subnav when collapsed */
+.sidebar.collapsed .sidebar-subnav {
+    display: none !important;
+}
+
+.sidebar.collapsed .sidebar-section-header .section-arrow {
+    display: none;
+}
+
+/* Animation for collapse */
+.sidebar-subnav .sidebar-item {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Desktop styles */

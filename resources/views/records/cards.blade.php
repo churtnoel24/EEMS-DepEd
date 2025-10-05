@@ -73,7 +73,7 @@
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="social-tab" data-bs-toggle="tab"
+                            <button class="nav-link" id="reproductive-tab" data-bs-toggle="tab"
                                 data-bs-target="#reproductive-{{ $card->id }}" type="button" role="tab">
                                 OB-Gyn for Female & Rectal Exam for Male
                             </button>
@@ -107,7 +107,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <span class="info-label">Position:</span>
-                                        <span class="d-block">{{ $card->professionalInformation->position_designation }}</span>
+                                        <span
+                                            class="d-block">{{ $card->professionalInformation->position_designation }}</span>
                                     </div>
                                     <div class="mb-3">
                                         <span class="info-label">Years in Service:</span>
@@ -117,11 +118,13 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <span class="info-label">School District/Division:</span>
-                                        <span class="d-block">{{ $card->professionalInformation->school_district_division }}</span>
+                                        <span
+                                            class="d-block">{{ $card->professionalInformation->school_district_division }}</span>
                                     </div>
                                     <div class="mb-3">
                                         <span class="info-label">First Year in Service:</span>
-                                        <span class="d-block">{{ $card->professionalInformation->first_year_in_service}}</span>
+                                        <span
+                                            class="d-block">{{ $card->professionalInformation->first_year_in_service }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -130,261 +133,296 @@
                         <!-- Medical History Tab -->
                         <div class="tab-pane fade" id="medical-{{ $card->id }}" role="tabpanel">
                             <h6 class="section-title">Family History</h6>
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                @foreach ([
-            'hypertension' => 'Hypertension',
-            'cardiovascular_disease' => 'Cardiovascular',
-            'diabetes_mellitus' => 'Diabetes',
-            'kidney_disease' => 'Kidney Disease',
-            'cancer' => 'Cancer',
-            'asthma' => 'Asthma',
-            'allergy' => 'Allergy',
-        ] as $key => $label)
-                                    @php
-                                        $flag = "family_history_{$key}";
-                                        $rel = "family_history_{$key}_relationship";
-                                    @endphp
-                                    @if ($card->familyHistory->$flag === 'Y')
-                                        <span class="badge bg-info text-dark medical-badge">
-                                            {{ $label }} ({{ $card->familyHistory->$rel }})
-                                        </span>
-                                    @endif
-                                @endforeach
-                            </div>
-                            <div class="mb-3">
-                                <span class="col-md-12">
-                                    <label class="info-label fw-bold">Other Remarks</label>
-                                    <span class="d-block">{{ $card->familyHistory->other_remarks }}</span>
-                                </span>
-                            </div>
+
+                            @if ($card->familyHistory)
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    @foreach ([
+                'hypertension' => 'Hypertension',
+                'cardiovascular_disease' => 'Cardiovascular',
+                'diabetes_mellitus' => 'Diabetes',
+                'kidney_disease' => 'Kidney Disease',
+                'cancer' => 'Cancer',
+                'asthma' => 'Asthma',
+                'allergy' => 'Allergy',
+            ] as $key => $label)
+                                        @php
+                                            $flag = "family_history_{$key}";
+                                            $rel = "family_history_{$key}_relationship";
+                                        @endphp
+                                        @if ($card->familyHistory->$flag === 'Y')
+                                            <span class="badge bg-info text-dark medical-badge">
+                                                {{ $label }} ({{ $card->familyHistory->$rel }})
+                                            </span>
+                                        @endif
+                                    @endforeach
+                                </div>
+                                <div class="mb-3">
+                                    <span class="col-md-12">
+                                        <label class="info-label fw-bold">Other Remarks</label>
+                                        <span class="d-block">{{ $card->familyHistory->other_remarks }}</span>
+                                    </span>
+                                </div>
+                            @else
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> No family history records found.
+                                </div>
+                            @endif
 
                             <h6 class="section-title">Past Medical History</h6>
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                @foreach ([
-            'hypertension' => 'Hypertension',
-            'asthma' => 'Asthma',
-            'diabetes_mellitus' => 'Diabetes',
-            'cardiovascular_disease' => 'Cardiovascular',
-            'tuberculosis' => 'Tuberculosis',
-        ] as $key => $label)
-                                    @php $field = "past_medical_history_{$key}"; @endphp
-                                    @if ($card->pastMedicalHistory->$field === 'Y')
-                                        <span class="badge bg-warning text-dark medical-badge">{{ $label }}</span>
+
+                            @if($card->pastMedicalHistory)
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    @foreach ([
+                'hypertension' => 'Hypertension',
+                'asthma' => 'Asthma',
+                'diabetes_mellitus' => 'Diabetes',
+                'cardiovascular_disease' => 'Cardiovascular',
+                'tuberculosis' => 'Tuberculosis',
+            ] as $key => $label)
+                                        @php $field = "past_medical_history_{$key}"; @endphp
+                                        @if ($card->pastMedicalHistory->$field === 'Y')
+                                            <span class="badge bg-warning text-dark medical-badge">{{ $label }}</span>
+                                        @endif
+                                    @endforeach
+
+                                    @if ($card->pastMedicalHistory->has_allergy === 'Y')
+                                        <span class="badge bg-warning text-dark medical-badge">
+                                            Allergy: {{ $card->pastMedicalHistory->past_medical_history_allergy }}
+                                        </span>
                                     @endif
-                                @endforeach
 
-                                @if ($card->pastMedicalHistory->has_allergy === 'Y')
-                                    <span class="badge bg-warning text-dark medical-badge">
-                                        Allergy: {{ $card->pastMedicalHistory->past_medical_history_allergy }}
-                                    </span>
-                                @endif
-
-                                @if ($card->pastMedicalHistory->had_surgery === 'Y')
-                                    <span class="badge bg-warning text-dark medical-badge">
-                                        Surgery: {{ $card->pastMedicalHistory->past_medical_history_surgery }}
-                                    </span>
-                                @endif
-
-                                @if ($card->pastMedicalHistory->had_been_hospitalized === 'Y')
-                                    <span class="badge bg-warning text-dark medical-badge">
-                                        Hospitalization: {{ $card->pastMedicalHistory->past_medical_history_hospitalization }}
-                                    </span>
-                                @endif
-                            </div>
-                            <div class="mb-3">
-                                <span class="col-md-12">
-                                    <label class="info-label fw-bold">Others <em>Pls. specify</em></label>
-                                    <span class="d-block">{{ $card->pastMedicalHistory->past_medical_history_others }}</span>
-                                </span>
-                            </div>
-
-                            <h6 class="section-title">Present Health Status</h6>
-                            <div class="d-flex flex-wrap gap-2">
-                                @foreach ([
-            'dizziness' => 'Dizziness',
-            'dyspnea' => 'Dyspnea',
-            'chest_back_pain' => 'Chest Pain',
-            'easy_fatigability' => 'Fatigue',
-            'joint_extremity_pains' => 'Joint Pain',
-            'blurring_of_vision' => 'Vision Issues',
-            'vaginal_discharge_bleeding' => 'Vaginal Issues',
-            'lumps' => 'Lumps',
-            'painful_urination' => 'Painful Urination',
-            'syncope_fainting' => 'Fainting',
-        ] as $key => $label)
-                                    @php $field = "present_health_status_{$key}"; @endphp
-                                    @if ($card->presentHealthStatus->$field === 'Y')
-                                        <span class="badge bg-light text-dark medical-badge">{{ $label }}</span>
+                                    @if ($card->pastMedicalHistory->had_surgery === 'Y')
+                                        <span class="badge bg-warning text-dark medical-badge">
+                                            Surgery: {{ $card->pastMedicalHistory->past_medical_history_surgery }}
+                                        </span>
                                     @endif
-                                @endforeach
-                            </div>
-                        </div>
 
-                        <!-- Tests & Results Tab -->
-                        <div class="tab-pane fade" id="tests-{{ $card->id }}" role="tabpanel">
-                            <div class="row">
-                                @foreach ([
-            'cxr_sputum' => 'CXR/Sputum',
-            'ecg' => 'ECG',
-            'urinalysis' => 'Urinalysis',
-            'drug_test' => 'Drug Test',
-            'neuro_exam' => 'Neuro Exam',
-            'bloodtyping' => 'Blood Typing',
-        ] as $key => $label)
-                                    @php
-                                        $dateField = "last_taken_{$key}_date";
-                                        $resField = "last_taken_{$key}_result";
-                                    @endphp
-                                    @if ($card->lastTaken->$dateField || $card->lastTaken->$resField)
-                                        <div class="col-md-6 mb-3">
-                                            <div class="card h-100">
-                                                <div class="card-body">
-                                                    <h6 class="card-title">{{ $label }}</h6>
-                                                    @if ($card->lastTaken->$dateField)
-                                                        <div class="mb-1">
-                                                            <span class="info-label">Date:</span>
-                                                            <span>{{ \Carbon\Carbon::parse($card->lastTaken->$dateField)->format('M d, Y') }}</span>
-                                                        </div>
-                                                    @endif
-                                                    @if ($card->lastTaken->$resField)
-                                                        <div>
-                                                            <span class="info-label">Result:</span>
-                                                            <span class="badge bg-success">{{ $card->lastTaken->$resField }}</span>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <!-- Lifestyle Tab -->
-                        <div class="tab-pane fade" id="social-{{ $card->id }}" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    @if ($card->socialHistory->smoking === 'Y')
-                                        <div class="card mb-3">
-                                            <div class="card-body">
-                                                <h6 class="card-title">Smoking</h6>
-                                                <div class="mb-1">
-                                                    <span class="info-label">Started at age:</span>
-                                                    <span>{{ $card->socialHistory->smoking_age_started }}</span>
-                                                </div>
-                                                <div class="mb-1">
-                                                    <span class="info-label">Amount:</span>
-                                                    <span>{{ $card->socialHistory->smoking_sticks_pack_per_day }} sticks/day</span>
-                                                </div>
-                                                <div>
-                                                    <span class="info-label">Pack-years:</span>
-                                                    <span>{{ $card->socialHistory->smoking_pack_per_year }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    @if ($card->pastMedicalHistory->had_been_hospitalized === 'Y')
+                                        <span class="badge bg-warning text-dark medical-badge">
+                                            Hospitalization: {{ $card->pastMedicalHistory->past_medical_history_hospitalization }}
+                                        </span>
                                     @endif
                                 </div>
-                                <div class="col-md-6">
-                                    @if ($card->socialHistory->alcohol === 'Y')
-                                        <div class="card mb-3">
-                                            <div class="card-body">
-                                                <h6 class="card-title">Alcohol Consumption</h6>
-                                                <div>
-                                                    <span class="info-label">Frequency:</span>
-                                                    <span>{{ $card->socialHistory->alcohol_how_often }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
+                                <div class="mb-3">
+                                    <span class="col-md-12">
+                                        <label class="info-label fw-bold">Others <em>Pls. specify</em></label>
+                                        <span class="d-block">{{ $card->pastMedicalHistory->past_medical_history_others }}</span>
+                                    </span>
                                 </div>
-                            </div>
 
-                            @if ($card->socialHistory->food_preference)
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Food Preference</h6>
-                                        <p class="mb-0">{{ $card->socialHistory->food_preference }}</p>
-                                    </div>
+                                <h6 class="section-title">Present Health Status</h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach ([
+                'dizziness' => 'Dizziness',
+                'dyspnea' => 'Dyspnea',
+                'chest_back_pain' => 'Chest Pain',
+                'easy_fatigability' => 'Fatigue',
+                'joint_extremity_pains' => 'Joint Pain',
+                'blurring_of_vision' => 'Vision Issues',
+                'vaginal_discharge_bleeding' => 'Vaginal Issues',
+                'lumps' => 'Lumps',
+                'painful_urination' => 'Painful Urination',
+                'syncope_fainting' => 'Fainting',
+            ] as $key => $label)
+                                        @php $field = "present_health_status_{$key}"; @endphp
+                                        @if ($card->presentHealthStatus->$field === 'Y')
+                                            <span class="badge bg-light text-dark medical-badge">{{ $label }}</span>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> No records found.
                                 </div>
                             @endif
                         </div>
 
-                        <div class="tab-pane fade" id="reproductive-{{ $card->id }}" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    @if ($card->gender === 'Female')
-                                        <div class="card mb-3">
-                                            <div class="card-body">
-                                                <h6 class="card-title">Ob-gyn History</h6>
-                                                <div class="mb-1">
-                                                    <span class="info-label">Menarche:</span>
-                                                    <span>{{ $card->obgynHistory->menarche }}</span>
-                                                </div>
-                                                <div class="mb-1">
-                                                    <span class="info-label">Cycle:</span>
-                                                    <span>{{ $card->obgynHistory->cycle }}</span>
-                                                </div>
-                                                <div>
-                                                    <span class="info-label">Duration:</span>
-                                                    <span>{{ $card->obgynHistory->duration }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="col-md-6">
-                                    @if ($card->gender === 'Female')
-                                        <div class="card mb-3">
-                                            <div class="card-body">
-                                                <div class="mb-1">
-                                                    <span class="info-label">OB Gyn Parity:</span>
-                                                    <span>{{ $card->obgynHistory->ob_gyn_parity }}</span>
-                                                </div>
-                                                <div class="mb-1">
-                                                    <span class="info-label">Papsmear Done:</span>
-                                                    <span>{{ $card->obgynHistory->papsmear_done }}</span>
-                                                </div>
-                                                <div>
-                                                    <span class="info-label">Papsmear Date:</span>
-                                                    <span>{{ $card->obgynHistory->papsmear_date }}</span>
+                        <!-- Tests & Results Tab -->
+                        <div class="tab-pane fade" id="tests-{{ $card->id }}" role="tabpanel">
+                            @if($card->lastTaken)
+                                <div class="row">
+                                    @foreach ([
+                'cxr_sputum' => 'CXR/Sputum',
+                'ecg' => 'ECG',
+                'urinalysis' => 'Urinalysis',
+                'drug_test' => 'Drug Test',
+                'neuro_exam' => 'Neuro Exam',
+                'bloodtyping' => 'Blood Typing',
+            ] as $key => $label)
+                                        @php
+                                            $dateField = "last_taken_{$key}_date";
+                                            $resField = "last_taken_{$key}_result";
+                                        @endphp
+                                        @if ($card->lastTaken->$dateField || $card->lastTaken->$resField)
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card h-100">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title">{{ $label }}</h6>
+                                                        @if ($card->lastTaken->$dateField)
+                                                            <div class="mb-1">
+                                                                <span class="info-label">Date:</span>
+                                                                <span>{{ \Carbon\Carbon::parse($card->lastTaken->$dateField)->format('M d, Y') }}</span>
+                                                            </div>
+                                                        @endif
+                                                        @if ($card->lastTaken->$resField)
+                                                            <div>
+                                                                <span class="info-label">Result:</span>
+                                                                <span
+                                                                    class="badge bg-success">{{ $card->lastTaken->$resField }}</span>
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endif
+                                        @endif
+                                    @endforeach
                                 </div>
-
-                            @if ($card->gender === 'Female')
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Self Breast Exam Done</h6>
-                                        <p class="mb-0">{{ $card->obgynHistory->self_breast_exam_done }}</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6 class="card-title">Mass Noted</h6>
-                                        <p class="mb-0">{{ $card->obgynHistory->mass_noted }}</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6 class="card-title">Mass Location</h6>
-                                        <p class="mb-0">{{ $card->socialHistory->mass_location }}</p>
-                                    </div>
+                            @else
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> No records found.
                                 </div>
-                                 @endif
+                            @endif
                         </div>
 
+                        <!-- Lifestyle Tab -->
+                        <div class="tab-pane fade" id="social-{{ $card->id }}" role="tabpanel">
+                            @if($card->socialHistory)
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @if ($card->socialHistory->smoking === 'Y')
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Smoking</h6>
+                                                    <div class="mb-1">
+                                                        <span class="info-label">Started at age:</span>
+                                                        <span>{{ $card->socialHistory->smoking_age_started }}</span>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <span class="info-label">Amount:</span>
+                                                        <span>{{ $card->socialHistory->smoking_sticks_pack_per_day }}
+                                                            sticks/day</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="info-label">Pack-years:</span>
+                                                        <span>{{ $card->socialHistory->smoking_pack_per_year }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-6">
+                                        @if ($card->socialHistory->alcohol === 'Y')
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Alcohol Consumption</h6>
+                                                    <div>
+                                                        <span class="info-label">Frequency:</span>
+                                                        <span>{{ $card->socialHistory->alcohol_how_often }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                @if ($card->socialHistory->food_preference)
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Food Preference</h6>
+                                            <p class="mb-0">{{ $card->socialHistory->food_preference }}</p>
+                                        </div>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> No records found.
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Reproductive Health Tab -->
+                        <div class="tab-pane fade" id="reproductive-{{ $card->id }}" role="tabpanel">
+                            @if($card->obgynHistory)
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @if ($card->gender === 'Female')
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Ob-gyn History</h6>
+                                                    <div class="mb-1">
+                                                        <span class="info-label">Menarche:</span>
+                                                        <span>{{ $card->obgynHistory->menarche }}</span>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <span class="info-label">Cycle:</span>
+                                                        <span>{{ $card->obgynHistory->cycle }}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="info-label">Duration:</span>
+                                                        <span>{{ $card->obgynHistory->duration }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-6">
+                                        @if ($card->gender === 'Female')
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <div class="mb-1">
+                                                        <span class="info-label">OB Gyn Parity:</span>
+                                                        <span>{{ $card->obgynHistory->ob_gyn_parity }}</span>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <span class="info-label">Papsmear Done:</span>
+                                                        <span>{{ $card->obgynHistory->papsmear_done }}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="info-label">Papsmear Date:</span>
+                                                        <span>{{ $card->obgynHistory->papsmear_date }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    @if ($card->gender === 'Female')
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Self Breast Exam Done</h6>
+                                                <p class="mb-0">{{ $card->obgynHistory->self_breast_exam_done }}</p>
+                                            </div>
+                                            <div class="card-body">
+                                                <h6 class="card-title">Mass Noted</h6>
+                                                <p class="mb-0">{{ $card->obgynHistory->mass_noted }}</p>
+                                            </div>
+                                            <div class="card-body">
+                                                <h6 class="card-title">Mass Location</h6>
+                                                <p class="mb-0">{{ $card->obgynHistory->mass_location }}</p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+
                                 @if ($card->gender === 'Male')
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Digital Rectal Exam Done</h6>
-                                        <p class="mb-0">{{ $card->malePersonnel->digital_rectal_exam_done }}</p>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Digital Rectal Exam Done</h6>
+                                            <p class="mb-0">{{ $card->malePersonnel->digital_rectal_exam_done }}</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6 class="card-title">Digital Rectal Exam Date</h6>
+                                            <p class="mb-0">{{ $card->malePersonnel->digital_rectal_exam_date }}</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6 class="card-title">Digital Rectal Exam Result</h6>
+                                            <p class="mb-0">{{ $card->malePersonnel->digital_rectal_exam_result }}</p>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <h6 class="card-title">Digital Rectal Exam Date</h6>
-                                        <p class="mb-0">{{ $card->malePersonnel->digital_rectal_exam_date }}</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6 class="card-title">Digital Rectal Exam Result</h6>
-                                        <p class="mb-0">{{ $card->malePersonnel->digital_rectal_exam_result }}</p>
-                                    </div>
+                                @endif
+                            @else
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> No records found.
                                 </div>
                             @endif
                         </div>

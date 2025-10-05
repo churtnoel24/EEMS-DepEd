@@ -1,18 +1,19 @@
 <!-- Top Navbar - Brand Only -->
 <nav class="navbar navbar-dark navbar-darkblue shadow-sm sticky-top z-999">
     <div class="container-fluid">
-        <!-- User Profile Dropdown -->
-        @auth
-         <!-- Brand and Toggle -->
+        <!-- Brand and Toggle -->
         <div class="d-flex align-items-center">
             <button class="btn btn-dark" id="sidebarToggle">
                 <i class="bi bi-list"></i>
             </button>
             <a class="navbar-brand ms-2" href="{{ route('dashboard') }}">
                 <x-application-logo style="height: 36px; width: 36px;" />
-                <span class="ms-2">Health System</span>
+                <span class="ms-2">Employees' Electronic Management System</span>
             </a>
         </div>
+
+        <!-- User Profile Dropdown -->
+        @auth
         <div class="dropdown">
             <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown"
                role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,8 +37,18 @@
                 </li>
             </ul>
         </div>
+        @else
+        <div class="d-flex gap-3">
+            <a class="nav-link text-white" href="{{ route('login') }}">Login</a>
+            @if (Route::has('register'))
+                <a class="nav-link text-white" href="{{ route('register') }}">Register</a>
+            @endif
+        </div>
+        @endauth
+    </div>
+</nav>
 
-        <!-- Sidebar Navigation -->
+<!-- Sidebar Navigation -->
 <div class="sidebar" id="sidebar">
     <div class="sidebar-content">
         @auth
@@ -45,48 +56,94 @@
             <li class="sidebar-item">
                 <a class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
                    href="{{ route('dashboard') }}">
-                    <i class="bi bi-speedometer2 me-2"></i>
-                    <span>{{ __('Dashboard') }}</span>
+                    <i class="bi bi-speedometer2 me-2 text-white"></i>
+                    <span class="text-white">{{ __('Dashboard') }}</span>
                 </a>
             </li>
 
-            <li class="sidebar-header">Health Cards</li>
-            <li class="sidebar-item">
-                <a class="sidebar-link {{ request()->routeIs('health-card.create') ? 'active' : '' }}"
-                   href="{{ route('health-card.create') }}">
-                    <i class="bi bi-plus-circle me-2"></i>
-                    <span>{{ __('Create Health Card') }}</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link {{ request()->routeIs('dental-card.create') ? 'active' : '' }}"
-                   href="{{ route('dental-card.create') }}">
-                    <i class="bi bi-tooth me-2"></i>
-                    <span>{{ __('Create Dental Card') }}</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link {{ request()->routeIs('health-cards.index') ? 'active' : '' }}"
-                   href="{{ route('health-cards.index') }}">
-                    <i class="bi bi-card-checklist me-2"></i>
-                    <span>{{ __('All Cards') }}</span>
-                </a>
+            <!-- Health Cards Section - Collapsible -->
+            <li class="sidebar-section">
+                <div class="sidebar-section-header text-white" data-bs-toggle="collapse" data-bs-target="#healthCardsCollapse">
+                    <span>Health Cards</span>
+                    <i class="bi bi-chevron-down section-arrow text-white"></i>
+                </div>
+                <div class="collapse show" id="healthCardsCollapse">
+                    <ul class="sidebar-subnav">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link {{ request()->routeIs('health-card.create') ? 'active' : '' }}"
+                               href="{{ route('health-card.create') }}">
+                                <i class="bi bi-plus-circle me-2 text-white"></i>
+                                <span class="text-white">{{ __('Create Health Card') }}</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link {{ request()->routeIs('dental-card.create') ? 'active' : '' }}"
+                               href="{{ route('dental-card.create') }}">
+                                <i class="bi bi-tooth me-2 text-white"></i>
+                                <span class="text-white">{{ __('Create Dental Card') }}</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link {{ request()->routeIs('health-cards.index') ? 'active' : '' }}"
+                               href="{{ route('health-cards.index') }}">
+                                <i class="bi bi-card-checklist me-2 text-white"></i>
+                                <span class="text-white">{{ __('All Cards') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
-            <li class="sidebar-header">Records</li>
-            <li class="sidebar-item">
-                <a class="sidebar-link {{ request()->routeIs('health-card.ctr') ? 'active' : '' }}"
-                   href="{{ route('health-card.ctr') }}">
-                    <i class="bi bi-clipboard-plus me-2"></i>
-                    <span>{{ __('Consultation Record') }}</span>
-                </a>
+            <!-- Records Section - Collapsible -->
+            <li class="sidebar-section">
+                <div class="sidebar-section-header text-white" data-bs-toggle="collapse" data-bs-target="#recordsCollapse">
+                    <span>Records</span>
+                    <i class="bi bi-chevron-down section-arrow"></i>
+                </div>
+                <div class="collapse show" id="recordsCollapse">
+                    <ul class="sidebar-subnav">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link {{ request()->routeIs('health-card.ctr') ? 'active' : '' }}"
+                               href="{{ route('health-card.ctr') }}">
+                                <i class="bi bi-clipboard-plus me-2 text-white"></i>
+                                <span class="text-white">{{ __('Consultation Record') }}</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link {{ request()->routeIs('health-card.ctrs') ? 'active' : '' }}"
+                               href="{{ route('health-card.ctrs') }}">
+                                <i class="bi bi-archive me-2 text-white"></i>
+                                <span class="text-white">{{ __('All Records') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link {{ request()->routeIs('health-card.ctrs') ? 'active' : '' }}"
-                   href="{{ route('health-card.ctrs') }}">
-                    <i class="bi bi-archive me-2"></i>
-                    <span>{{ __('All Records') }}</span>
-                </a>
+
+             <!-- Settings Section - Collapsible -->
+            <li class="sidebar-section">
+                <div class="sidebar-section-header text-white" data-bs-toggle="collapse" data-bs-target="#settingsCollapse">
+                    <span>Management Settings</span>
+                    <i class="bi bi-chevron-down section-arrow"></i>
+                </div>
+                <div class="collapse show" id="settingsCollapse">
+                    <ul class="sidebar-subnav">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link {{ request()->routeIs('settings.predefined-items') ? 'active' : '' }}"
+                               href="{{ route('settings.predefined-items') }}">
+                                <i class="bi bi-clipboard-plus me-2 text-white"></i>
+                                <span class="text-white">{{ __('Manage Chief Complaint') }}</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link {{ request()->routeIs('health-card.ctrs') ? 'active' : '' }}"
+                               href="{{ route('health-card.ctrs') }}">
+                                <i class="bi bi-archive me-2 text-white"></i>
+                                <span class="text-white">{{ __('Manage Treatment/Recommendation') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
         @endauth
@@ -95,18 +152,6 @@
 
 <!-- Overlay when sidebar is open on mobile -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
-<!-- Your navigation HTML code here -->
-        @else
-        <div class="d-flex gap-3">
-    <a class="nav-link text-white" href="{{ route('login') }}">Login</a>
-    @if (Route::has('register'))
-        <a class="nav-link text-white" href="{{ route('register') }}">Register</a>
-    @endif
-</div>
-
-        @endauth
-    </div>
-</nav>
 
 
 
@@ -117,9 +162,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     const mainContent = document.querySelector('.main-content');
 
-    // Load saved state from localStorage
-    const savedState = localStorage.getItem('sidebarCollapsed');
-    if (savedState === 'true' && window.innerWidth >= 768) {
+    console.log('Sidebar:', sidebar); // Debug
+    console.log('Toggle:', sidebarToggle); // Debug
+
+    // Only run if sidebar exists (authenticated pages)
+    if (!sidebar || !sidebarToggle) {
+        console.log('Sidebar or toggle not found');
+        return;
+    }
+
+    // Load saved states from localStorage
+    const savedSidebarState = localStorage.getItem('sidebarCollapsed');
+    const savedHealthCardsState = localStorage.getItem('healthCardsCollapsed');
+    const savedRecordsState = localStorage.getItem('recordsCollapsed');
+    const savedSettingsState = localStorage.getItem('settingsCollapse');
+
+    // Apply saved sidebar state
+    if (savedSidebarState === 'true' && window.innerWidth >= 768) {
         sidebar.classList.add('collapsed');
         if (mainContent) {
             mainContent.classList.remove('sidebar-open');
@@ -127,7 +186,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Apply saved section states
+    if (savedHealthCardsState === 'true') {
+        const healthCardsCollapse = document.getElementById('healthCardsCollapse');
+        if (healthCardsCollapse) {
+            healthCardsCollapse.classList.remove('show');
+        }
+    }
+
+    if (savedRecordsState === 'true') {
+        const recordsCollapse = document.getElementById('recordsCollapse');
+        if (recordsCollapse) {
+            recordsCollapse.classList.remove('show');
+        }
+    }
+
+    if (savedSettingsState === 'true') {
+        const settingsCollapse = document.getElementById('settingsCollapse');
+        if(settingsCollapse) {
+            settingsCollapse.classList.remove('show');
+        }
+    }
+
+    // Sidebar toggle function
     function toggleSidebar() {
+        console.log('Toggle sidebar clicked'); // Debug
         const isMobile = window.innerWidth < 768;
 
         if (isMobile) {
@@ -148,10 +231,59 @@ document.addEventListener('DOMContentLoaded', function() {
             // Save state to localStorage
             localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
         }
+
+        console.log('Sidebar classes:', sidebar.classList); // Debug
     }
 
+    // Section collapse handlers - FIXED SYNTAX ERROR
+    function setupSectionCollapse() {
+        const sectionHeaders = document.querySelectorAll('.sidebar-section-header');
+
+        sectionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                if (sidebar.classList.contains('collapsed')) return;
+
+                const target = this.getAttribute('data-bs-target');
+                const collapseElement = document.querySelector(target);
+                const isExpanded = collapseElement.classList.contains('show');
+
+                // Save section state - FIXED SYNTAX
+                if (target === '#healthCardsCollapse') {
+                    localStorage.setItem('healthCardsCollapsed', !isExpanded);
+                } else if (target === '#recordsCollapse') {
+                    localStorage.setItem('recordsCollapsed', !isExpanded);
+                } else if (target === '#settingsCollapse') {
+                    localStorage.setItem('settingsCollapse', !isExpanded); // FIXED: removed extra comma
+                }
+            });
+        });
+
+        // Initialize Bootstrap collapses
+        const collapseElements = document.querySelectorAll('.collapse');
+        collapseElements.forEach(collapse => {
+            collapse.addEventListener('show.bs.collapse', function() {
+                const header = document.querySelector(`[data-bs-target="#${this.id}"]`);
+                if (header) {
+                    header.setAttribute('aria-expanded', 'true');
+                }
+            });
+
+            collapse.addEventListener('hide.bs.collapse', function() {
+                const header = document.querySelector(`[data-bs-target="#${this.id}"]`);
+                if (header) {
+                    header.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    }
+
+    // Initialize everything
     if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', toggleSidebar);
+        sidebarToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleSidebar();
+        });
     }
 
     if (sidebarOverlay) {
@@ -161,6 +293,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Setup section collapses
+    setupSectionCollapse();
 
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', function(event) {

@@ -26,7 +26,7 @@
                 <nav class="d-flex align-items-center gap-3">
                     @auth
                         <a href="{{ url('/dashboard') }}" class="btn btn-light me-2">Dashboard</a>
-                        <a href="{{ url('/health-card/create') }}" class="btn btn-outline-light">Create Health Card</a>
+                        <a href="{{ url('/health-card/') }}" class="btn btn-outline-light">Create Health Card</a>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-light me-2">Log in</a>
                         @if (Route::has('register'))
